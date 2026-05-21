@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FlowLens AI</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">FL</div>
+          <div>
+            <strong>FlowLens AI</strong>
+            <span>업무 핑퐁 분석</span>
+          </div>
+        </div>
+
+        <nav class="nav-list" aria-label="주요 메뉴">
+          <button class="nav-item active" type="button">대시보드</button>
+          <button class="nav-item" type="button">업무 흐름</button>
+          <button class="nav-item" type="button">병목 분석</button>
+          <button class="nav-item" type="button">AI 리포트</button>
+          <button class="nav-item" type="button">설정</button>
+        </nav>
+
+        <section class="side-panel">
+          <span class="panel-label">분석 범위</span>
+          <strong>구매 요청 / 계약 검토</strong>
+          <p>현업, 구매, 재무, 법무, 임원 승인 단계의 업무 로그 42건을 분석했습니다.</p>
+        </section>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Google AI Challenge MVP</p>
+            <h1>AI 기반 업무 핑퐁 및 병목 분석 시스템</h1>
+          </div>
+          <div class="top-actions">
+            <button class="icon-button" id="refreshButton" title="새로고침" aria-label="새로고침" type="button">↻</button>
+            <button class="primary-button" id="reportButton" type="button">리포트 생성</button>
+          </div>
+        </header>
+
+        <section class="kpi-grid" id="kpiGrid" aria-label="핵심 지표"></section>
+
+        <section class="dashboard-grid">
+          <article class="surface flow-surface">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Process Map</p>
+                <h2>부서 간 업무 이동 흐름</h2>
+              </div>
+              <span class="status-pill">실시간 분석</span>
+            </div>
+            <div class="flow-map" id="flowMap" aria-label="부서 간 흐름도"></div>
+          </article>
+
+          <article class="surface ai-panel">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">AI Insight</p>
+                <h2>분석 요약</h2>
+              </div>
+            </div>
+            <div id="aiSummary"></div>
+          </article>
+
+          <article class="surface">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Bottleneck</p>
+                <h2>병목 부서 랭킹</h2>
+              </div>
+            </div>
+            <div class="bar-list" id="departmentBars"></div>
+          </article>
+
+          <article class="surface">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Reject Reason</p>
+                <h2>반려 사유 분포</h2>
+              </div>
+            </div>
+            <div class="reason-chart" id="reasonChart"></div>
+          </article>
+        </section>
+
+        <section class="surface table-surface">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Work Logs</p>
+              <h2>업무 로그 상세</h2>
+            </div>
+            <div class="segmented" role="tablist" aria-label="업무 상태 필터">
+              <button class="selected" data-filter="전체" type="button">전체</button>
+              <button data-filter="지연" type="button">지연</button>
+              <button data-filter="완료" type="button">완료</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>업무 ID</th>
+                  <th>업무명</th>
+                  <th>이동 구간</th>
+                  <th>액션</th>
+                  <th>사유</th>
+                  <th>대기 시간</th>
+                  <th>상태</th>
+                </tr>
+              </thead>
+              <tbody id="logTable"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
