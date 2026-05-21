@@ -209,7 +209,15 @@ h2 {
   margin-bottom: 14px;
 }
 
+.defect-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
 .kpi-card,
+.defect-card,
 .surface {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -247,6 +255,78 @@ h2 {
   color: var(--muted);
   font-size: 13px;
   line-height: 1.45;
+}
+
+.defect-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 132px;
+  padding: 18px;
+}
+
+.defect-card::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: var(--green);
+  content: "";
+}
+
+.defect-card.deviance::before {
+  background: var(--red);
+}
+
+.defect-card.idle::before {
+  background: var(--amber);
+}
+
+.defect-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.defect-type {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.defect-level {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  border-radius: 999px;
+  padding: 0 9px;
+  background: var(--surface-soft);
+  color: var(--green-dark);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.defect-card.deviance .defect-level {
+  background: #fdecea;
+  color: var(--red);
+}
+
+.defect-card.idle .defect-level {
+  background: #fff2de;
+  color: var(--amber);
+}
+
+.defect-main {
+  margin-top: 14px;
+  font-size: 20px;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+.defect-detail {
+  margin: 9px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.48;
 }
 
 .dashboard-grid {
@@ -561,6 +641,10 @@ th {
 
   .kpi-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .defect-grid {
+    grid-template-columns: 1fr;
   }
 
   .dashboard-grid {

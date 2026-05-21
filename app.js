@@ -86,7 +86,7 @@ const logs = [
     to: "재무팀",
     action: "검토",
     reason: "구독 비용 검토",
-    wait: 24,
+    wait: 28,
     status: "지연",
   },
   {
@@ -108,6 +108,26 @@ const logs = [
     reason: "구매 확정",
     wait: 5,
     status: "완료",
+  },
+  {
+    id: "PR-006",
+    title: "긴급 소프트웨어 라이선스 구매",
+    from: "재무팀",
+    to: "임원",
+    action: "승인요청",
+    reason: "긴급 구매로 법무 검토 생략",
+    wait: 12,
+    status: "지연",
+  },
+  {
+    id: "PR-007",
+    title: "단기 컨설팅 계약",
+    from: "구매팀",
+    to: "임원",
+    action: "승인요청",
+    reason: "표준 계약서 미사용",
+    wait: 16,
+    status: "지연",
   },
 ];
 
@@ -142,6 +162,16 @@ const topPingpong = Object.entries(pingpongPairs).sort((a, b) => b[1] - a[1])[0]
 const bottleneck = [...departmentStats].sort((a, b) => b.averageWait - a.averageWait)[0];
 const reasons = countBy(rejectLogs, "reason");
 const topReason = Object.entries(reasons).sort((a, b) => b[1] - a[1])[0];
+const caseGroups = logs.reduce((acc, log) => {
+  acc[log.id] = acc[log.id] || [];
+  acc[log.id].push(log);
+  return acc;
+}, {});
+const devianceCases = Object.values(caseGroups).filter((events) => {
+  const visited = new Set(events.flatMap((event) => [event.from, event.to]));
+  return visited.has("임원") && !visited.has("법무팀");
+});
+const financeStat = departmentStats.find((item) => item.department === "재무팀");
 
 const kpis = [
   {
@@ -177,6 +207,45 @@ document.querySelector("#kpiGrid").innerHTML = kpis
         <div class="kpi-label">${kpi.label}</div>
         <div class="kpi-value">${kpi.value}${kpi.unit ? `<small>${kpi.unit}</small>` : ""}</div>
         <p class="kpi-note">${kpi.note}</p>
+      </article>
+    `,
+  )
+  .join("");
+
+const defects = [
+  {
+    className: "pingpong",
+    type: "핑퐁 결함",
+    level: "주의",
+    main: `${topPingpong[0]} ${topPingpong[1]}회 반복`,
+    detail: "요청 정보 보완과 반려가 반복되어 재작업 루프가 발생했습니다.",
+  },
+  {
+    className: "deviance",
+    type: "일탈 결함",
+    level: "위험",
+    main: `법무 검토 생략 ${devianceCases.length}건`,
+    detail: "표준 계약 검토 단계를 우회한 승인 요청이 감지되었습니다.",
+  },
+  {
+    className: "idle",
+    type: "지연/유휴 결함",
+    level: "높음",
+    main: `재무팀 평균 대기 ${financeStat.averageWait.toFixed(0)}시간`,
+    detail: "예산 검토 단계에서 장기 대기가 반복되어 전체 리드타임이 증가했습니다.",
+  },
+];
+
+document.querySelector("#defectGrid").innerHTML = defects
+  .map(
+    (defect) => `
+      <article class="defect-card ${defect.className}">
+        <div class="defect-top">
+          <span class="defect-type">${defect.type}</span>
+          <span class="defect-level">${defect.level}</span>
+        </div>
+        <div class="defect-main">${defect.main}</div>
+        <p class="defect-detail">${defect.detail}</p>
       </article>
     `,
   )
